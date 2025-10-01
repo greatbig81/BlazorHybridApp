@@ -1,5 +1,54 @@
 ﻿@page "/"
+@inject IJSRuntime JSRuntime
+@using Microsoft.Maui.Media;
 
-<h1>Hello, world!</h1>
+<h1>Camera Feed</h1>
 
-Welcome to your new app.ㄹㅇㄴㅁㄹㅇ
+<video id="cameraFeed" autoplay style="width: 100%; max-width: 600px; border: 1px solid #ccc;"></video>
+<br/>
+<button @onclick="StartCamera">카메라 시작</button>
+
+@code {
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // 첫 렌더링 시 JavaScript 함수가 준비되었음을 확인
+            // 실제 카메라 시작은 버튼 클릭으로 분리하여 사용자 권한 요청을 명확히 합니다.
+        }
+    }
+
+    private async Task StartCamera()
+    {
+        // 1. MAUI Permissions API를 사용하여 카메라 접근 권한 요청
+        var status = await Permissions.CheckStatusAsync<Permissions.Camera>();
+        
+        if (status != PermissionStatus.Granted)
+        {
+            status = await Permissions.RequestAsync<Permissions.Camera>();
+        }
+
+        if (status == PermissionStatus.Granted)
+        {
+            try
+            {
+                // 2. JavaScript 함수를 호출하여 브라우저 API를 통해 카메라를 켜고 스트림을 video 요소에 연결
+                await JSRuntime.InvokeVoidAsync("startCameraFeed", "cameraFeed");
+            }
+            catch (JSException ex)
+            {
+                Console.WriteLine($"JS Error: {ex.Message}");
+                // 사용자에게 오류 메시지를 표시할 수 있습니다.
+            }
+        }
+        else
+        {
+            // 권한 거부 시 사용자에게 알림
+            // (예: MAUI DisplayAlert 사용)
+            await Application.Current.MainPage.DisplayAlert("권한 필요", "카메라 사용을 허용해야 합니다.", "확인");
+        }
+    }
+}
+
+

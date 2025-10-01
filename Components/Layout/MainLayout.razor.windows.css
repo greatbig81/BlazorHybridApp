@@ -8,15 +8,29 @@ main {
     flex: 1;
 }
 
+/*
 .sidebar {
     background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
 }
+*/
+
+/* .nav-menu는 NavMenu.razor의 최상위 ul 또는 div일 수 있습니다. */
+.sidebar {
+    /* 수평 레이아웃을 위한 Flexbox 설정 */
+    display: flex;
+    flex-direction: row; /* 항목들을 가로로 배열 */
+    padding: 0;
+    margin: 0;
+    list-style: none; /* 리스트 마커 제거 */
+    overflow-x: auto; /* 메뉴가 길어지면 가로 스크롤 허용 */
+}
+
 
 .top-row {
     background-color: #f7f7f7;
     border-bottom: 1px solid #d6d5d5;
     justify-content: flex-end;
-    height: 3.0rem;
+    height: 3.5rem;
     display: flex;
     align-items: center;
 }
