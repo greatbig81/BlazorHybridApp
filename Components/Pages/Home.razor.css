@@ -1,0 +1,18 @@
+.video-container {
+    position: relative; /* 자식 요소(비디오)의 기준점 */
+    width: 100%; /* 컨테이너의 너비는 부모 요소에 맞춤 */
+    padding-bottom: 75%; /* 높이를 너비의 75%로 설정 (4:3 비율) */
+    height: 0; /* 높이는 패딩으로 대체하므로 0 */
+    overflow: hidden; /* 비디오가 컨테이너를 벗어나지 않도록 숨김 */
+    border: 1px solid #ccc;
+}
+
+.video-container video {
+    position: absolute; /* 컨테이너 내에서 절대 위치 지정 */
+    top: 0;
+    left: 0;
+    width: 100%; /* 컨테이너에 꽉 채움 */
+    height: 100%;
+    object-fit: cover; /* 비디오 비율과 컨테이너 비율이 다를 경우 채우기 방식 설정 */
+}
+

@@ -4,11 +4,14 @@
 
 <h1>Camera Feed</h1>
 
-<video id="cameraFeed" autoplay style="width: 100%; max-width: 600px; border: 1px solid #ccc;"></video>
+<div class="video-container">
+    <video id="cameraFeed" autoplay></video>
+</div>
 <br/>
-<button @onclick="StartCamera">카메라 시작</button>
+<button @onclick="ToggleCamera">카메라 시작(@isFrontCamera)</button>
 
 @code {
+    private bool isFrontCamera = true;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -16,10 +19,26 @@
         {
             // 첫 렌더링 시 JavaScript 함수가 준비되었음을 확인
             // 실제 카메라 시작은 버튼 클릭으로 분리하여 사용자 권한 요청을 명확히 합니다.
+            if (firstRender)
+            {
+                // 초기 로드 시 앞면 카메라로 시작
+                await StartCamera("user");
+            }
         }
     }
 
-    private async Task StartCamera()
+    private async Task ToggleCamera()
+    {
+        isFrontCamera = !isFrontCamera;
+
+        // 새로운 facingMode 결정
+        string facingMode = isFrontCamera ? "user" : "environment";
+
+        // JavaScript 함수를 호출하여 카메라 전환
+        await StartCamera(facingMode);
+    }
+
+    private async Task StartCamera(string facingMode)
     {
         // 1. MAUI Permissions API를 사용하여 카메라 접근 권한 요청
         var status = await Permissions.CheckStatusAsync<Permissions.Camera>();
@@ -34,7 +53,7 @@
             try
             {
                 // 2. JavaScript 함수를 호출하여 브라우저 API를 통해 카메라를 켜고 스트림을 video 요소에 연결
-                await JSRuntime.InvokeVoidAsync("startCameraFeed", "cameraFeed");
+                await JSRuntime.InvokeVoidAsync("startCameraFeed", "cameraFeed", facingMode);
             }
             catch (JSException ex)
             {

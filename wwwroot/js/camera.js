@@ -1,11 +1,27 @@
+
+let currentStream = null;
+
 // startCameraFeed 함수 정의
-window.startCameraFeed = function (videoId) {
+window.startCameraFeed = function (videoId, facingMode) {
     const video = document.getElementById(videoId);
+
+    // 1. 기존 스트림이 있다면 중지 (토글 시 필요)
+    if (currentStream) {
+        currentStream.getTracks().forEach(track => track.stop());
+    }
+
+    // 2. 새로운 제약 조건 설정
+    const constraints = {
+        video: {
+            facingMode: facingMode
+        }
+    };
 
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         // 카메라와 마이크 접근 요청
-        navigator.mediaDevices.getUserMedia({ video: true })
+        navigator.mediaDevices.getUserMedia(constraints)
             .then(function (stream) {
+                currentStream = stream; // 현재 스트림 저장
                 // 스트림을 video 엘리먼트의 source로 설정하여 영상 렌더링 시작
                 video.srcObject = stream;
                 video.play();
