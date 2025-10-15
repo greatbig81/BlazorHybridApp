@@ -88,7 +88,7 @@
                 dotnetReference = DotNetObjectReference.Create(this);
                 await jsModule.InvokeVoidAsync("CameraHelper.setDotNetReference", dotnetReference);
                 */
-                                                                                                                                await StartCamera("user");
+                await StartCamera("user");
 
                 // .NET 참조 생성 및 JavaScript에 전달
                 dotnetReference = DotNetObjectReference.Create(this);
