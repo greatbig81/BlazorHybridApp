@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 #if ANDROID
 using Microsoft.Maui.Platform;
 using Android.Webkit;
+using BlazorHybridApp.Services;
 #endif
 
 
@@ -32,6 +33,11 @@ namespace BlazorHybridApp
 #if DEBUG
     		builder.Services.AddBlazorWebViewDeveloperTools();
     		builder.Logging.AddDebug();
+#endif
+
+#if ANDROID
+            // ObjectRecognitive 싱글톤 등록
+            builder.Services.AddSingleton<ObjectRecognitive>();
 #endif
 
             return builder.Build();

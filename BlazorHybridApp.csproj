@@ -61,9 +61,24 @@
     </ItemGroup>
 
     <ItemGroup>
+      <MauiImage Remove="Resources\Images\f.jpg" />
+      <MauiImage Remove="Resources\Images\f_20251014154200225.jpg" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Platforms\Android\Resources\xml\network_security_config.xml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="Resources\Images\f.jpg" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="$(MauiVersion)" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.5" />
+        <PackageReference Include="Microsoft.Maui.Graphics" Version="9.0.110" />
+        <PackageReference Include="Microsoft.Maui.Graphics.Skia" Version="9.0.110" />
     </ItemGroup>
 
 </Project>
